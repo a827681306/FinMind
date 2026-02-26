@@ -8,6 +8,8 @@ from .categories import bp as categories_bp
 from .docs import bp as docs_bp
 from .dashboard import bp as dashboard_bp
 from .cache import bp as cache_bp
+from .search import bp as search_bp
+from .dedup import bp as dedup_bp
 
 
 def register_routes(app: Flask):
@@ -20,3 +22,5 @@ def register_routes(app: Flask):
     app.register_blueprint(docs_bp, url_prefix="/docs")
     app.register_blueprint(dashboard_bp, url_prefix="/dashboard")
     app.register_blueprint(cache_bp, url_prefix="/cache")
+    app.register_blueprint(search_bp, url_prefix="/api/search")
+    app.register_blueprint(dedup_bp, url_prefix="/api/duplicates")

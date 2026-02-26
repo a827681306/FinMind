@@ -85,6 +85,36 @@ def cache_stats():
     return {"total_entries": total, "expired": expired, "active": total - expired, "tags": len(_tag_keys)}
 
 
+def monthly_summary_key(user_id, ym):
+    """Return the cache key for a user's monthly summary."""
+    return f"user:{user_id}:monthly_summary:{ym}"
+
+
+def dashboard_summary_key(user_id, ym):
+    """Return the cache key for a user's dashboard summary."""
+    return f"user:{user_id}:dashboard_summary:{ym}"
+
+
+def dashboard_summary_key(user_id, period):
+    """Return the cache key for a user's dashboard summary."""
+    return f"user:{user_id}:dashboard_summary:{period}"
+
+
+def cache_delete_patterns(patterns):
+    """Delete cache entries whose keys match any of the given glob-style patterns."""
+    import fnmatch
+    keys_to_delete = []
+    for key in list(_cache.keys()):
+        for pat in patterns:
+            if fnmatch.fnmatch(key, pat):
+                keys_to_delete.append(key)
+                break
+    for key in keys_to_delete:
+        cache_delete(key)
+    if keys_to_delete:
+        logger.info("Cache pattern-delete removed %d keys", len(keys_to_delete))
+
+
 def clear_all():
     """Clear entire cache."""
     _cache.clear()
